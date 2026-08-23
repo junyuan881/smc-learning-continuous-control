@@ -1,0 +1,13 @@
+{
+  "student": {
+    "name": "謝濬遠",
+    "student_id": "114024511"
+  },
+  "steps": 1000,
+  "particles": 20,
+  "best_particle": -31.638058703385557,
+  "weighted_mean_action": -31.620204847336506,
+  "global_optimum": -35.0,
+  "absolute_error_of_best_particle": 3.361941296614443,
+  "resampling_events": 15
+}
