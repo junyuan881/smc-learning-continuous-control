@@ -1,0 +1,49 @@
+{
+  "environment": {
+    "fc": 1.25,
+    "inertia": 0.1,
+    "s_max": 2.5,
+    "s_desired": 1.75,
+    "p": 0.9,
+    "quay": [
+      200.0,
+      110.0
+    ],
+    "success_zone_width": 0.2,
+    "viability_zone_width": 20.0,
+    "action_range_degrees": [
+      -90.0,
+      90.0
+    ],
+    "dynamics_variant": "paper"
+  },
+  "learning": {
+    "state_bins_per_variable": 10,
+    "alpha0": 0.5,
+    "alpha_decay": 0.01,
+    "gamma": 0.99,
+    "sarsa_tau0": 3.0,
+    "sarsa_tau_decay": 0.0001,
+    "smc_sigma": 0.95,
+    "smc_tau0": 25.0,
+    "smc_tau_decay": 0.0005,
+    "continuous_q_epsilon0": 0.4,
+    "continuous_q_epsilon_decay": 0.005,
+    "state_features": "xy"
+  },
+  "paper_comparison": {
+    "episodes": 100000,
+    "sarsa_actions": [
+      5,
+      10,
+      20,
+      40
+    ],
+    "smc_particles": [
+      5,
+      10
+    ],
+    "tile_coding_effective_actions": 80,
+    "continuous_q_anchors": 40
+  }
+}
