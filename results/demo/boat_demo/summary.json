@@ -1,0 +1,54 @@
+{
+  "student": {
+    "name": "謝濬遠",
+    "student_id": "114024511"
+  },
+  "config": {
+    "episodes": 300,
+    "state_bins": 6,
+    "state_features": "xy",
+    "gamma": 0.99,
+    "alpha0": 0.5,
+    "alpha_decay": 0.01,
+    "sarsa_tau0": 3.0,
+    "sarsa_tau_decay": 0.0001,
+    "smc_tau0": 25.0,
+    "smc_tau_decay": 0.0005,
+    "smc_sigma": 0.95,
+    "cont_epsilon0": 0.4,
+    "cont_epsilon_decay": 0.005,
+    "max_steps": 260,
+    "dynamics_variant": "paper"
+  },
+  "seed": 114024511,
+  "evaluation": {
+    "SMC-5": {
+      "mean_reward": -10.0,
+      "std_reward": 0.0,
+      "success_rate": 0.0,
+      "mean_final_y": 8.139681388632566
+    },
+    "SMC-10": {
+      "mean_reward": -9.53986062232464,
+      "std_reward": 2.5284771152474583,
+      "success_rate": 0.0,
+      "mean_final_y": 6.979580746018782
+    },
+    "SARSA-5": {
+      "mean_reward": -8.04360876213664,
+      "std_reward": 5.298018913264866,
+      "success_rate": 0.0,
+      "mean_final_y": 49.788999214958466
+    },
+    "SARSA-40": {
+      "mean_reward": -9.649855463805086,
+      "std_reward": 1.7471005180753718,
+      "success_rate": 0.0,
+      "mean_final_y": 29.302035741963078
+    }
+  },
+  "notes": [
+    "This is a compact demo, not a claim of exact numerical replication of Figure 2.",
+    "Use scripts/run_paper_scale.py for the paper's 10 state bins and 100,000 episodes."
+  ]
+}
