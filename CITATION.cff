@@ -1,0 +1,22 @@
+cff-version: 1.2.0
+title: "SMC-Learning for Continuous-Action Reinforcement Learning - Reproduction Demo"
+message: "If you use this reproduction, please cite the original paper by Lazaric, Restelli, and Bonarini."
+type: software
+authors:
+  - family-names: "謝"
+    given-names: "濬遠"
+version: 1.0.0
+date-released: 2026-08-23
+preferred-citation:
+  type: conference-paper
+  title: "Reinforcement Learning in Continuous Action Spaces through Sequential Monte Carlo Methods"
+  authors:
+    - family-names: "Lazaric"
+      given-names: "Alessandro"
+    - family-names: "Restelli"
+      given-names: "Marcello"
+    - family-names: "Bonarini"
+      given-names: "Andrea"
+  year: 2007
+  conference:
+    name: "Advances in Neural Information Processing Systems 20"

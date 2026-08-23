@@ -1,0 +1,14 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "smc-learning-continuous-control"
+version = "1.0.0"
+description = "Reproducible demo of SMC-learning for continuous-action reinforcement learning"
+requires-python = ">=3.10"
+dependencies = ["numpy>=1.24", "matplotlib>=3.7"]
+authors = [{name = "謝濬遠"}]
+
+[tool.setuptools.packages.find]
+include = ["src*"]
