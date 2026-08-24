@@ -1,172 +1,117 @@
-# SMC-Learning for Continuous-Action Reinforcement Learning
+# SMC Learning in Continuous Action Spaces
 
-**Student:** 謝濬遠  
-**Student ID:** 114024511
+A reproducible implementation of **Sequential Monte Carlo (SMC) learning** for continuous-action reinforcement learning, based on the NIPS 2007 paper *Reinforcement Learning in Continuous Action Spaces through Sequential Monte Carlo Methods* and its boat-control experiment.
 
-A clean, runnable reproduction/demo project for:
+This repository focuses on two ideas: visualizing how particles approximate a continuous action distribution, and comparing an SMC actor–critic agent with discrete and continuous-control baselines in the boat environment.
 
-> Alessandro Lazaric, Marcello Restelli, Andrea Bonarini, **“Reinforcement Learning in Continuous Action Spaces through Sequential Monte Carlo Methods,”** NIPS 2007.
+## What this project includes
 
-The project reconstructs the paper's boat-control experiment and implements the core **SMC-learning** actor-critic algorithm, together with the comparison baselines used in the paper.
+- A continuous-action boat navigation environment.
+- An SMC actor–critic agent with weighted action particles.
+- SARSA with tile coding and a continuous-Q baseline.
+- Compact demos for quickly checking the implementation.
+- Paper-scale experiment scripts for longer, multi-seed runs.
+- Tests, verification utilities, configuration files, and reproduction notes.
 
-## What is included
+## Quick start
 
-- Paper boat environment with the published nonlinear dynamics and reward zones.
-- SMC-learning with:
-  - continuous action particles,
-  - importance-weight update,
-  - effective sample size (ESS),
-  - systematic resampling,
-  - local uniform-kernel particle movement,
-  - SARSA critic.
-- Discrete SARSA with 5, 10, 20, and 40 actions.
-- Two-tiling action-CMAC baseline with 2.25° effective resolution (80 action candidates).
-- Continuous-action Q-learning interpolation baseline with 40 anchors.
-- Fast particle-mechanism demo, a compact boat demo, and a 100,000-episode paper-scale runner.
-- Plotting of learning curves, boat trajectories, and SMC particle distributions.
-- Unit tests and a project verification script.
-- Explicit reproduction notes for details that the paper does not specify.
+```bash
+git clone https://github.com/junyuan881/smc-learning-continuous-control.git
+cd smc-learning-continuous-control
+
+python -m venv .venv
+# Linux/macOS
+source .venv/bin/activate
+# Windows PowerShell
+# .venv\Scripts\Activate.ps1
+
+pip install -r requirements.txt
+```
+
+Run the two shortest demonstrations:
+
+```bash
+# Visualize particle evolution on a one-dimensional objective
+python scripts/run_particle_demo.py
+
+# Compare the boat-control agents with a compact training budget
+python scripts/run_demo.py --episodes 500 --all-baselines
+```
+
+Generated figures and summaries are written under `results/`.
+
+## Demo results
+
+| Particle optimization | Boat-control learning curves |
+|---|---|
+| ![Particle convergence](results/demo/particle_demo/particle_convergence.png) | ![Learning curves](results/demo/boat_demo/learning_curves.png) |
+
+| SMC trajectories | SMC particle distribution |
+|---|---|
+| ![SMC trajectories](results/demo/boat_demo/smc10_trajectories.png) | ![SMC particles](results/demo/boat_demo/smc_particles.png) |
+
+## Experiment entry points
+
+| Goal | Command |
+|---|---|
+| Particle demonstration | `python scripts/run_particle_demo.py` |
+| Compact boat experiment | `python scripts/run_demo.py --episodes 500` |
+| Include every baseline | `python scripts/run_demo.py --episodes 500 --all-baselines` |
+| Paper-scale multi-seed run | `python scripts/run_paper_scale.py --episodes 100000 --seeds 3` |
+| Short paper-scale smoke test | `python scripts/run_paper_scale.py --episodes 5000 --seeds 1 --skip-slow-baselines` |
+| Run tests | `pytest -q` |
+| Verify project setup | `python scripts/verify_project.py` |
+
+Use `--help` on any script to inspect the available controls for seeds, particle counts, episode budgets, output directories, and other experiment settings.
+
+## Methods
+
+| Method | Action representation | Purpose |
+|---|---|---|
+| SMC learning | Weighted particles in continuous action space | Main method reproduced in this project |
+| SARSA + tile coding | Discretized features and actions | Value-based comparison baseline |
+| Continuous Q-learning | Continuous action search | Continuous-control comparison baseline |
+
+The SMC agent maintains a particle approximation to the policy, updates particle weights from observed returns, and resamples particles to concentrate computation around promising actions. The boat task then tests whether this representation can learn useful steering behavior without imposing a fixed action grid.
+
+## Reproduction scope
+
+The compact commands are designed for implementation checks and visualization; they are not intended to reproduce the paper's numerical results exactly. For longer experiments, use the paper-scale runner, multiple random seeds, and the supplied configuration.
+
+- [Paper summary](docs/PAPER_SUMMARY.md)
+- [Reproduction notes](docs/REPRODUCTION_NOTES.md)
+- [Paper-scale configuration](configs/paper_boat.json)
+- [Original paper PDF](SMC_learning_in_Continuous_Action_Spaces.pdf)
 
 ## Repository structure
 
 ```text
 .
-├── CITATION.cff
-├── configs/
-│   └── paper_boat.json
-├── docs/
-│   ├── PAPER_SUMMARY.md
-│   └── REPRODUCTION_NOTES.md
-├── notebooks/
-│   └── demo.ipynb
-├── results/
-│   └── demo/                 # verified example outputs included
-├── scripts/
-│   ├── run_particle_demo.py
-│   ├── run_demo.py
-│   ├── run_paper_scale.py
-│   └── verify_project.py
+├── configs/                 # Experiment configuration
+├── docs/                    # Paper summary and reproduction notes
+├── notebooks/               # Interactive demonstration
+├── results/demo/            # Included example outputs
+├── scripts/                 # Demo, paper-scale, and verification entry points
 ├── src/
-│   ├── agents/
-│   │   ├── continuous_q.py
-│   │   ├── sarsa.py
-│   │   ├── smc_learning.py
-│   │   └── tile_coding.py
-│   ├── environment.py
-│   ├── plotting.py
-│   ├── training.py
-│   └── utils.py
-├── tests/
-│   └── test_core.py
-├── references.bib
-├── requirements.txt
-└── README.md
+│   ├── agents/              # SMC, SARSA, tile coding, and continuous-Q agents
+│   ├── environment.py       # Boat environment
+│   ├── training.py          # Training loops
+│   └── plotting.py          # Visualization utilities
+└── tests/                   # Core tests
 ```
 
-## Installation
+## Requirements
 
-### Windows PowerShell
+- Python 3.10+
+- NumPy
+- Matplotlib
+- pytest
 
-```powershell
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
-python -m pip install --upgrade pip
-pip install -r requirements.txt
-```
+## Citation
 
-### macOS / Linux
+Citation metadata is available in [`CITATION.cff`](CITATION.cff), with additional references in [`references.bib`](references.bib).
 
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-python -m pip install --upgrade pip
-pip install -r requirements.txt
-```
+## Author
 
-## Run the fast SMC particle demo
-
-This is a small continuous-action example that makes the paper's importance-weighting, ESS, resampling, and particle-moving mechanism easy to see:
-
-```bash
-python scripts/run_particle_demo.py
-```
-
-It finishes quickly and writes `particle_convergence.png`, `particle_evolution.png`, and a JSON summary.
-
-## Run the compact boat demo
-
-```bash
-python scripts/run_demo.py --episodes 500
-```
-
-This runs SMC-learning with 5/10 particles and SARSA with 5/40 actions, then writes:
-
-- `results/runs/demo/learning_curves.png`
-- `results/runs/demo/smc10_trajectories.png`
-- `results/runs/demo/smc_particles.png`
-- `results/runs/demo/rewards.csv`
-- `results/runs/demo/summary.json`
-
-To include the two slower comparison baselines:
-
-```bash
-python scripts/run_demo.py --episodes 500 --all-baselines
-```
-
-## Run the paper-scale comparison
-
-The published Figure 2 reaches **100,000 episodes**. The configuration in `configs/paper_boat.json` reproduces the published hyperparameters and uses 10 bins for each of the two explicitly presented boat coordinates (`x`,`y`).
-
-```bash
-python scripts/run_paper_scale.py --episodes 100000 --seeds 3
-```
-
-For a quicker paper-parameter smoke run:
-
-```bash
-python scripts/run_paper_scale.py --episodes 5000 --seeds 1 --skip-slow-baselines
-```
-
-## Validate the repository
-
-```bash
-pytest -q
-python scripts/verify_project.py
-```
-
-## Paper parameters reproduced
-
-| Item | Value |
-|---|---:|
-| Current force `fc` | 1.25 |
-| Inertia `I` | 0.1 |
-| Max speed `sMAX` | 2.5 |
-| Desired speed `sD` | 1.75 |
-| Proportional coefficient `p` | 0.9 |
-| Quay | `(200, 110)` |
-| Success-zone width | 0.2 |
-| Viability-zone width | 20 |
-| State representation | x/y, 10 bins each |
-| Discount `gamma` | 0.99 |
-| Initial learning rate / decay | 0.5 / 0.01 |
-| SARSA temperature / decay | 3.0 / 0.0001 |
-| SMC ESS ratio `sigma` | 0.95 |
-| SMC temperature / decay | 25.0 / 0.0005 |
-| Continuous-Q epsilon / decay | 0.4 / 0.005 |
-
-The paper's decay rule is implemented as:
-
-```text
-x(N) = x(0) / (1 + delta_x * N)
-```
-
-## Reproduction scope
-
-This is intentionally **not presented as a bit-for-bit recovery of the authors' original implementation**. Some numerical implementation choices are absent from the 8-page paper, including exact starting y coordinates, full state-variable discretization bounds, CMAC details, and the exact boat adaptation of Continuous Q-learning. All such assumptions are listed in [`docs/REPRODUCTION_NOTES.md`](docs/REPRODUCTION_NOTES.md).
-
-The uploaded paper also refers to mini-golf and swing-up pendulum experiments in an appendix, but that appendix is not present in the supplied 8-page file. This repository therefore does not invent unsupported appendix experiments.
-
-## Reference
-
-See `references.bib`. Official paper: https://proceedings.neurips.cc/paper/2007/hash/0f840be9b8db4d3fbd5ba2ce59211f55-Abstract.html
+[junyuan881](https://github.com/junyuan881)
 
